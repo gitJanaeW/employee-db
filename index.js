@@ -23,7 +23,7 @@ const viewDatabase = (section) => {
         const sql = `SELECT employee.first_name, employee.last_name, role.title AS title
         FROM employee
         LEFT JOIN role ON
-        role.department_id = employee.role_id;`
+        employee.role_id = role.id;`
         db.query(sql, (err, rows) => {
             console.table(rows);
         });
@@ -41,7 +41,6 @@ const viewDatabase = (section) => {
             console.table(rows);
         });
     }
-
 }
 
 questions();
