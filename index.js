@@ -14,19 +14,24 @@ const questions = () => {
 
 const viewDatabase = (section) => {
     if (section === 'View Employees') {
-        const sql = `SELECT * FROM employee;`
+        // const sql = `SELECT employee.first_name, employee.last_name, role.title AS title, department.name AS department 
+        // FROM employee
+        // LEFT JOIN role ON
+        // role.department_id = employee.role_id
+        // LEFT JOIN department ON
+        // department.name = employee.role_id;`
+        const sql = `SELECT employee.first_name, employee.last_name, role.title AS title
+        FROM employee
+        LEFT JOIN role ON
+        role.department_id = employee.role_id;`
         db.query(sql, (err, rows) => {
-            const employeeArr = rows;
-            const sansId =  employeeArr.forEach(() => {
-                delete employeeArr.department_id;
-            });
-            console.table(sansId);
+            console.table(rows);
         });
     } else if (section === 'View Roles') {
-        const sql = `Select role.*, department.name AS department_name 
-            FROM role 
-            LEFT JOIN department ON
-            role.department_id = department.id;`
+        const sql = `Select role.title, department.name AS department, role.salary
+        FROM role 
+        LEFT JOIN department ON
+        role.department_id = department.id;`
         db.query(sql, (err, rows) => {
             console.table(rows);
         });
