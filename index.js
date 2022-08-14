@@ -16,12 +16,13 @@ const viewDatabase = (section) => {
     if (section === 'View Employees') {
         const sql = `SELECT employee.first_name, employee.last_name,
         role.title AS title, role.salary AS salary,
-        role.department_id AS department, employee.manager_id
+        role.department_id AS department, employee.manager_id AS manager
         FROM employee
         LEFT JOIN role ON
-        employee.role_id = role.id;`
-        // LEFT JOIN department ON
-        // role.department_id = employee.department_id
+        employee.role_id = role.id
+        LEFT JOIN department ON
+        role.department_id = department.id;`
+        
         db.query(sql, (err, rows) => {
             console.table(rows);
         });
