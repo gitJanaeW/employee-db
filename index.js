@@ -44,8 +44,7 @@ const viewDatabase = (section) => {
 }
 
 const inquireEmployee = () => {
-    console.log('in inquirerEmp')
-    inquirer.prompt(
+    inquirer.prompt([
         {
             type: 'input',
             name: 'firstName',
@@ -67,12 +66,13 @@ const inquireEmployee = () => {
             message: 'Is the employee a manager?',
             default: false
         }
-    ).then((employeeInfo) => addEmployee(employeeInfo));
+    ])
+    .then(employeeInfo => addEmployee(employeeInfo));
     
 }
 
 const addEmployee = (employee) => {
-    console.log(employee);
+    console.log("LOOOK HERE");
     const sql = `INSERT INTO employee (first_name, last_name, role_id, manager) VALUES
     (${firstName}, ${lastName}, ${roleId}, ${manager})`;
     db.query(sql, (err, row) => {
