@@ -153,12 +153,16 @@ const inquireUpdateEmployee = () => {
 }
 
 const updateEmployee = (employeeUpdate) => {
+    console.log('Employee: ', employeeUpdate);
     const sql = `UPDATE employee
-    SET role_id = '${parseInt(employeeUpdate.role)}
-    WHERE id = '${parseInt(employeeUpdate.employee)};`
+    SET role_id = ${parseInt(employeeUpdate.role)}
+    WHERE id = ${parseInt(employeeUpdate.employee)};`
     db.query(sql, (err, row) => {
         console.log('EMPLOYEE UPDATED');
-    });
+        if(err) {
+            console.log(err);
+        }
+    })
 }
 
 const inquireAddRole = () => {
