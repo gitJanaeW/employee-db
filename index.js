@@ -21,19 +21,39 @@ const questions = () => {
     )
 }
 
-const viewDatabase = (section) => {
+const accessDatabase = (section) => {
     switch (section) {
         case 'View Employees':
             viewEmployees();
+            // questions();
             break;
         case 'View Roles':
             viewRoles();
+            // questions()
             break;
         case 'View Departments':
-        viewDepartments();
-        break;
+            viewDepartments();
+            // questions();
+            break;
         case 'Add Employee':
-            inquireEmployee();
+            inquireAddEmployee();
+            // questions();
+            break;
+        case 'Update Employee Role':
+            // FIX BUGS
+            inquireUpdateEmployee();
+            break;
+            // questions();
+        case 'Add Role':
+            inquireAddRole();
+            // questions();
+            break;
+        case 'Add Department':
+            inquireAddDepartment();
+            // questions();
+            break;
+        case 'EXIT':
+            console.log('PRESS CTRL+C (OR) COMMAND+C TO QUIT')
             break;
     }
 }
@@ -67,7 +87,7 @@ const viewDepartments = () => {
     });
 }
 
-const inquireEmployee = () => {
+const inquireAddEmployee = () => {
     inquirer.prompt([
         {
             type: 'input',
@@ -109,15 +129,94 @@ const addEmployee = (managerId, employee) => {
     delete employee.manager;
     employee.managerId = managerId;
     employee.role = parseInt(employee.role);
-    console.log(employee);
     const sql = `INSERT INTO employee (first_name, last_name, role_id, manager) VALUES
     ('${employee.firstName}', '${employee.lastName}', '${employee.role}', '${employee.managerId}')`;
     db.query(sql, (err, row) => {
-        console.log('Employee added.');
-        console.table(row);
+        console.log('EMPLOYEE ADDED');
+        console.table(employee);
     });
 }
 
+const inquireUpdateEmployee = () => {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'employee',
+            message: 'Which id matches the employee you would like to update?'
+        },
+        {
+            type: 'input',
+            name: 'role',
+            message: 'Which id matches the position the employee will be filling?'
+        }
+    ]).then(employeeUpdate => updateEmployee(employeeUpdate))
+}
+
+const updateEmployee = (employeeUpdate) => {
+    const sql = `UPDATE employee
+    SET role_id = '${parseInt(employeeUpdate.role)}
+    WHERE id = '${parseInt(employeeUpdate.employee)};`
+    db.query(sql, (err, row) => {
+        console.log('EMPLOYEE UPDATED');
+    });
+}
+
+const inquireAddRole = () => {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'title',
+            message: 'What role would you like to add?'
+        },
+        {
+            type: 'input',
+            name: 'salary',
+            message: 'What is the salary of this role?'
+        },
+        {
+            type: 'input',
+            name: 'departmentId',
+            message: 'Which department ID does this role belong to?'
+        }
+    ]).then(roleInfo => addRole(roleInfo));
+}
+
+const addRole = (roleInfo) => {
+    const sql = `INSERT INTO role (title, salary, department_id) 
+    VALUES ('${roleInfo.title}',
+    '${parseInt(roleInfo.salary)}',
+    '${parseInt(roleInfo.departmentId)}');`;
+    db.query(sql, (err, row) => {
+        console.log('ROLE ADDED');
+    });
+}
+
+const inquireAddDepartment = () => {
+    inquirer.prompt(
+        {
+            type: 'input',
+            name: 'department',
+            message: 'What is the name of the new department?'
+        }
+    ).then(({department}) => addDepartment(department));
+};
+
+const addDepartment = (department) => {
+    const sql = `INSERT INTO department (name) VALUES ('${department}')`
+    db.query(sql, (err, row) => {
+        console.log('DEPARTMENT ADDED');
+    });
+}
+
+// ADD IF THERE'S TIME
+// const showSqlSelect = (columnOne, columnTwo, table) => {
+//     const sql = `SELECT * FROM ${columnOne}, ${columnTwo} FROM ${table}`;
+//     const consoleTable = db.query(sql, (err, rows) => {
+//         console.table(rows);
+//     });
+//     return consoleTable;
+// }
+
 questions()
-    .then(({action}) => viewDatabase(action));
+    .then(({action}) => accessDatabase(action));
     // .then(questions);
