@@ -25,32 +25,24 @@ const accessDatabase = (section) => {
     switch (section) {
         case 'View Employees':
             viewEmployees();
-            // questions();
             break;
         case 'View Roles':
             viewRoles();
-            // questions()
             break;
         case 'View Departments':
             viewDepartments();
-            // questions();
             break;
         case 'Add Employee':
             inquireAddEmployee();
-            // questions();
             break;
         case 'Update Employee Role':
-            // FIX BUGS
             inquireUpdateEmployee();
             break;
-            // questions();
         case 'Add Role':
             inquireAddRole();
-            // questions();
             break;
         case 'Add Department':
             inquireAddDepartment();
-            // questions();
             break;
         case 'EXIT':
             console.log('PRESS CTRL+C (OR) COMMAND+C TO QUIT')
@@ -220,7 +212,16 @@ const addDepartment = (department) => {
 //     });
 //     return consoleTable;
 // }
+const continueOrExit = () => {
+    inquirer.prompt({
+        type: 'list',
+        name: 'quitChoice',
+        message: 'CONTINUE OR EXIT?',
+        choices: ['CONTINUE', 'EXIT']
+    }).then(({quitChoice}) => {
+        console.log(quitChoice);
+    })
+}
 
 questions()
     .then(({action}) => accessDatabase(action));
-    // .then(questions);
