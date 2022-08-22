@@ -12,7 +12,7 @@ Using MySQL database queries, create, update and delete a employees in your data
 
 ## Installation/Tests
 
-To install, clone the file. Make sure npm is installed and initialized. To test, write "node .\server.js" install into the command line.
+To install, clone the file. Make sure you have Node.js, MySQL, console.table and Inquirer version 8.2.4 downloaded to proceed. To test, write "node .\server.js" install into the command line.
 
 ## Contributing
 
